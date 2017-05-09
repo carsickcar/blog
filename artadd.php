@@ -29,45 +29,44 @@ if(empty($_POST)) {
 
 
 	//检测内容是否为空
-	$content = trim($_POST['content']);
+	$art['content'] = trim($_POST['content']);
 	if (empty($content)) {
 		error('内容为空');
 	}
 
 	//判断是否有图片上传 且 error 是否为0
-	$pic = $_POST['pic'];
+	$art['pic'] = $_POST['pic'];
 	if (empty($pic)) {
 		// $p = 1;
 	}
 
 	//插入发布时间
-	$pubtime = $_POST['pubtime'];
+	$art['pubtime'] = $_POST['pubtime'];
 
-	//收集tag
-	$arttag = $_POST['tag'];
+	//收集tag，采用‘,’作为分隔符
+	$art['arttag'] = $_POST['tag'];
 
 	//插入内容到art表
-	if(1) {
+	if(!mExec(art,$art)) {
 		
 		error('文章发布失败');
 	} else {
 		//判断是否有tag
-		
 		if($art['tag'] == '') {
 			//将cat 的 num 字段 当前栏目下的文章数 +1
-
+			$art['num'] += 1;
 			succ('文章添加成功');
 		} else {
 			//获取上次 insert 操作产生的主键id
-			
+			$id = getLastId();
 			//插入tag 到tag表
-
+			
 			}
 			$sql = rtrim($sql , ",");
 			//echo $sql;
 			if(mQuery($sql)) {
 				//将cat 的 num 字段 当前栏目下的文章数 +1
-
+				$art['num'] += 1;
 				succ('文章添加成功');
 			} else {
 				//tag 添加失败 删除原文章
