@@ -37,7 +37,7 @@ if(empty($_POST)) {
 	//判断是否有图片上传 且 error 是否为0
 	$pic = $_POST['pic'];
 	if (empty($pic)) {
-		
+		// $p = 1;
 	}
 
 	//插入发布时间
