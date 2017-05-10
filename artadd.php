@@ -20,7 +20,7 @@ if(empty($_POST)) {
 		error('标题为空');
 	}
 
-	//检测栏目是否合法
+	//检测栏目是否合法,id是否为数字
 	
 	$catname =  $_POST['catname'];
 	if (!empty($catname)) {
@@ -30,21 +30,26 @@ if(empty($_POST)) {
 
 	//检测内容是否为空
 	$art['content'] = trim($_POST['content']);
-	if (empty($content)) {
+	if (empty($art['content'])) {
 		error('内容为空');
 	}
 
 	//判断是否有图片上传 且 error 是否为0
-	$art['pic'] = $_POST['pic'];
-	if (empty($pic)) {
-		// $p = 1;
+	if ($_FILES['pic']['name']!=''&&$_FILES['pic']['error']==0) {
+		$filename = createDir();
 	}
+	// if (!empty($pic)) {
+	// 	$art['pic'] = $_POST['pic'];
+	// }
 
 	//插入发布时间
-	$art['pubtime'] = $_POST['pubtime'];
+	$art['pubtime'] = time();
 
 	//收集tag，采用‘,’作为分隔符
 	$art['arttag'] = $_POST['tag'];
+
+	// exit();
+
 
 	//插入内容到art表
 	if(!mExec(art,$art)) {
@@ -53,6 +58,11 @@ if(empty($_POST)) {
 	} else {
 		//判断是否有tag
 		if($art['tag'] == '') {
+	// $a = explode(',', $tag);
+	// foreach ($a as $v) {
+	// 	$art['tag'] = $v;
+	// 	// print_r($art['tag']."\n");
+	// }
 			//将cat 的 num 字段 当前栏目下的文章数 +1
 			$art['num'] += 1;
 			succ('文章添加成功');
